@@ -62,7 +62,7 @@ export default function Home() {
 
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto px-4 md:px-0">
       <Head>
         <title>Frontier GoWild Tool</title>
       </Head>
@@ -77,7 +77,6 @@ export default function Home() {
       </div>
 
       <div className="mb-4">
-        <input className="border px-3 py-2 mr-2" type="text" placeholder="Date" value={filter.date} onChange={(e) => setFilter({ ...filter, date: e.target.value })} />
         <select className="border px-3 py-2 mr-2" value={filter.origin} onChange={(e) => setFilter({ ...filter, origin: e.target.value })}>
           <option value="">Select Origin</option>
           {Object.entries(DESTINATIONS).map(([code, name]) => (
@@ -94,22 +93,22 @@ export default function Home() {
       </div>
 
       {sortedGroupKeys.map((groupKey) => {
-        const [origin, date] = groupKey.split("_");
+      const [origin, date] = groupKey.split("_");
 
-        return (
-          <div key={groupKey}>
-            <h2 className="text-2xl font-bold mb-4">{origin} - {date}</h2>
+      return (
+        <div key={groupKey}>
+          <h2 className="text-2xl font-bold mb-4">{origin} - {date}</h2>
 
-            <div className="grid grid-cols-3 gap-4">
-              {groupedFlights[groupKey].map((flightData) => (
-                flightData.flights.map((flight: FlightDetails, index: number) => (
-                  <FlightCard key={`${flightData._id}_${index}`} flight={flight} flightData={flightData} />
-                ))
-              ))}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {groupedFlights[groupKey].map((flightData) => (
+              flightData.flights.map((flight: FlightDetails, index: number) => (
+                <FlightCard key={`${flightData._id}_${index}`} flight={flight} flightData={flightData} />
+              ))
+            ))}
           </div>
-        )
-      })}
+        </div>
+      )
+    })}
     </div>
   )
 }
@@ -122,11 +121,11 @@ interface FlightCardProps {
 }
 
 const FlightCard: React.FC<FlightCardProps> = ({ flight, flightData }) => {
-  console.log({ flight, flightData })
+  console.log({ flight, flightData });
   return (
     <div className="border p-4 rounded-lg shadow-sm bg-white flex flex-col relative">
-      <div className="flex justify-between items-start">
-        <h2 className="text-lg font-bold">({flightData.destination}) {flightData.destination_fullname}</h2>
+      <div className="flex flex-col md:flex-row justify-between items-start">
+        <h2 className="text-lg font-bold mb-2 md:mb-0">({flightData.destination}) {flightData.destination_fullname}</h2>
         <div className="text-sm text-gray-500 flex flex-col items-end">
           <span className="inline-block bg-blue-500 text-white px-2 py-1 rounded mb-1">{flight.price}</span>
           <span>{flightData.date}</span>
