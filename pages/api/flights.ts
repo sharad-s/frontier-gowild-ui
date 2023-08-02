@@ -9,10 +9,7 @@ type Filter = {
 
 const MONGO_URI = "mongodb://mongo:JU7I4CFvzgb2M29YcaMp@containers-us-west-48.railway.app:6932"
 
-const client = new MongoClient(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+const client = new MongoClient(MONGO_URI);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     try {
