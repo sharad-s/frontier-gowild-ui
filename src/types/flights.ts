@@ -26,3 +26,14 @@ export type Flight = {
 }
 
 export type Records = Flight[];
+
+
+export type FlattenedFlight = {
+    _id: string;
+    date: string;
+    destination: string;
+    origin: string;
+    destination_fullname: string;
+    last_updated: string;
+} & FlightDetails;
+

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Flight, FlightDetails } from '../src/types/flights';
+import { FlattenedFlight, Flight, FlightDetails } from '../src/types/flights';
 import { DESTINATIONS } from '../src/constants';
 import AirportLocator from '../src/components/AirportLocator';
 import { FlightCard } from '../src/components/FlightCard';
@@ -15,12 +15,14 @@ const getTodaysDate = () => {
 };
 
 export default function Home() {
-  const [flights, setFlights] = useState<Flight[]>([]);
+  const [flights, setFlights] = useState<FlattenedFlight[]>([]);
   const [filter, setFilter] = useState({
     date: getTodaysDate(),
     origin: '',
     destination: '',
   });
+
+  console.log({ flights })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +47,9 @@ export default function Home() {
   });
 
   // Group flights by origin and date
-  const groupedFlights = flights.reduce((acc, flightData) => {
+  const groupedFlights: {
+    [key: string]: FlattenedFlight
+  } = flights.reduce((acc, flightData) => {
     const { origin, date } = flightData;
     const key = `${origin}_${date}`;
 
@@ -58,6 +62,8 @@ export default function Home() {
     return acc;
   }, {});
 
+
+  // Sort the group keys by origin and date
   const sortedGroupKeys = Object.keys(groupedFlights).sort((a, b) => {
     const [originA, dateA] = a.split("_");
     const [originB, dateB] = b.split("_");
@@ -118,10 +124,8 @@ export default function Home() {
             <h2 className="text-2xl font-bold mb-4">{origin} - {date}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {groupedFlights[groupKey].map((flightData) => (
-                flightData.flights.map((flight: FlightDetails, index: number) => (
-                  <FlightCard key={`${flightData._id}_${index}`} flight={flight} flightData={flightData} />
-                ))
+              {Object.keys(groupedFlights).map((key: string, index) => (
+                <FlightCard key={`${groupedFlights[key]._id}_${index}`} flight={groupedFlights[key]} />
               ))}
             </div>
           </div>

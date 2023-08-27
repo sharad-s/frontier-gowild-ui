@@ -28,10 +28,40 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // Find documents in the collection based on filter
         const documents = await collection.find(filter).toArray();
 
+        // const now = moment();
+
+        // const departed = [];
+        // const departingSoon = [];
+        // const available = [];
+
+        // documents.forEach(doc => {
+        //     const originTimezone = 'America/Chicago';  // You would dynamically determine this based on doc.origin
+        //     const localDepartureTime = `${doc.date} ${doc.flights[0].departure_time} ${originTimezone}`; // Format should be 'MM-DD-YYYY hh:mm A Z'
+
+        //     const departureTime = moment.tz(localDepartureTime, 'MM-DD-YYYY hh:mm A Z', originTimezone);
+        //     const diffInMinutes = departureTime.diff(now, 'minutes');
+
+        //     if (diffInMinutes < 0) {
+        //         departed.push(doc);
+        //     } else if (diffInMinutes >= 0 && diffInMinutes <= 30) {
+        //         departingSoon.push(doc);
+        //     } else {
+        //         available.push(doc);
+        //     }
+        // });
+
+
         // Send the documents to the client
-        res.status(200).json(documents);
+        res.status(200).json(documents)
+        // res.status(200).json({
+        //     departed,
+        //     departingSoon,
+        //     available
+        // });
     } catch (err) {
         console.error(err);
         res.status(500).json({ msg: 'Something went wrong.' });
     }
 };
+
+import moment from 'moment-timezone';

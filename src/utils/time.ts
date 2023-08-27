@@ -27,3 +27,16 @@ export const categorizeFlights = (flights: FlightDetails[]) => {
 
     return { departed, departingSoon, available };
 };
+
+
+const formatDateToBookingFormat = (date: string) => {
+    const [month, day, year] = date.split('-');
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${monthNames[parseInt(month) - 1]} ${parseInt(day)}, ${year}`;
+  };
+  
+  export const buildBookingUrl = (origin: string, destination: string, date: string) => {
+    const formattedDate = formatDateToBookingFormat(date);
+    return `https://booking.flyfrontier.com/Flight/InternalSelect?o1=${origin}&d1=${destination}&dd1=${formattedDate}&ADT=1&mon=true&promo=`;
+  };
+  
